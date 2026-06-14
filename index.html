@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mirror Neuron Training</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="stage" aria-label="Mirror neuron drawing simulator"></canvas>
+
+      <header class="topbar">
+        <div>
+          <h1>Mirror Neuron Training</h1>
+          <p id="runStatus">Draw on the left grid. Release to train.</p>
+        </div>
+        <div class="metrics" aria-live="polite">
+          <span><b id="scoreValue">--</b> score</span>
+          <span><b id="lossValue">--</b> loss</span>
+          <span><b id="epochValue">0</b> epochs</span>
+          <span><b id="agentValue">1,200</b> agents</span>
+        </div>
+      </header>
+
+      <aside class="evaluation" aria-live="polite">
+        <span><b id="coverageValue">--</b> coverage</span>
+        <span><b id="precisionValue">--</b> precision</span>
+        <span><b id="curveValue">--</b> curve</span>
+        <span><b id="lengthValue">--</b> length gate</span>
+        <span><b id="orderValue">--</b> order</span>
+        <span><b id="pointValue">0</b> points</span>
+      </aside>
+
+      <div class="dock">
+        <label class="learning-toggle">
+          <input id="keepLearning" type="checkbox" checked />
+          Keep learning
+        </label>
+        <button id="trainMoreButton" title="Practice the current drawing again" disabled>Train more</button>
+        <button id="resetButton" title="Clear drawing">Reset</button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
