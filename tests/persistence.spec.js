@@ -83,11 +83,10 @@ test("training persistence, target overlay priority, and replayable run restore"
 
   const persistedRecord = JSON.parse(persisted);
   expect(persistedRecord.model).toBeTruthy();
-  expect(persistedRecord.model.v).toBe(1);
-  expect(typeof persistedRecord.model.b).toBe("string");
-  expect(persistedRecord.model.b.length).toBeGreaterThan(0);
-  expect(persistedRecord.compactModelMeta).toBeTruthy();
-  expect(persistedRecord.compactModelMeta.h).toBe(12);
+  expect(Array.isArray(persistedRecord.model.w1)).toBeTruthy();
+  expect(Array.isArray(persistedRecord.model.w2)).toBeTruthy();
+  expect(persistedRecord.model.inputSize).toBeGreaterThan(0);
+  expect(persistedRecord.model.hiddenSize).toBeGreaterThan(0);
   expect(persistedRecord.rawStroke.length).toBeGreaterThan(4);
   expect(persistedRecord.aiStroke).toBeUndefined();
 
@@ -98,8 +97,7 @@ test("training persistence, target overlay priority, and replayable run restore"
   expect(restoredState.rawStrokeCount).toBeGreaterThan(0);
   expect(restoredState.targetLinePointCount).toBeGreaterThan(0);
   expect(restoredState.sampleCount).toBeGreaterThan(0);
-  expect(restoredState.compactModelMeta).toBeTruthy();
-  expect(restoredState.compactModelMeta.bytes).toBeGreaterThan(0);
+  expect(restoredState.compactModelMeta).toBeNull();
 
   let replayStarts = 0;
   let previous = false;

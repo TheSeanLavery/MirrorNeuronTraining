@@ -541,8 +541,7 @@ function persistRunSnapshot(context = {}) {
     loss: state.loss,
     epochs: state.epochs,
     evaluation: state.evaluation,
-    model: state.compactModel ? serializeCompactModel(state.compactModel) : null,
-    compactModelMeta: state.compactModel ? compactModelMetadata(state.compactModel) : null,
+    model: state.model ? serializeModel(state.model) : null,
     bestAiScore: state.bestAiScore,
     swarmGeneration: state.swarmGeneration,
     swarmDrawProgress: state.swarmDrawProgress,
@@ -588,12 +587,10 @@ function hydrateFromRunRecord(record) {
   state.bestAiStroke = [];
   state.bestAiEvaluation = null;
   state.bestAiSource = null;
-  state.compactModel = deserializeCompactModel(record.model);
-  state.model = state.compactModel
-    ? state.compactModel
-    : record.model
-      ? deserializeModel(record.model)
-      : null;
+  state.compactModel = null;
+  state.model = record.model
+    ? (deserializeModel(record.model) || deserializeCompactModel(record.model))
+    : null;
   state.isTraining = false;
   state.isRestoredRun = true;
 
@@ -1713,13 +1710,9 @@ async function trainFromStroke({ extra = false } = {}) {
     maxSamples: TINY_DISTILL_BATCH * 8
   });
   if (compactResult && compactResult.model) {
-    state.compactModel = compactResult.model;
-    state.model = compactResult.model;
     state.loss = compactResult.loss;
     state.epochs += compactResult.epochCount;
     state.trainingSamples = samples;
-  } else {
-    state.compactModel = model;
   }
   persistRunSnapshot({
     reason: "training-complete",
@@ -2026,7 +2019,7 @@ window.__mntDebug = {
       targetRenderOrder: targetLine.renderOrder,
       targetDepthTest: targetLine.material.depthTest,
       targetDepthWrite: targetLine.material.depthWrite,
-      compactModelMeta: state.compactModel ? compactModelMetadata(state.compactModel) : null,
+      compactModelMeta: null,
       keepLearning: keepLearning.checked,
       renderFrame
     };

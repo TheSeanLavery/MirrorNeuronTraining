@@ -30,15 +30,16 @@ The goal is: **final rendering should be reproducible from model weights only**,
 
 ### Required persisted fields
 1. `rawStroke`: retained for UI replay context
-2. `model`: compact payload only  
-   - `v`: schema version
-   - `i`: input size
-   - `h`: hidden size (target: `12`)
-   - `o`: output size
-   - `s`: quantization scale
-   - `b`: base64 int8 payload
-3. optional `compactModelMeta`: compact byte summary for quick diagnostics
-4. minimal session metadata (run id, epochs, compact loss, etc.)
+2. `model`: full model payload  
+   - `inputSize`
+   - `hiddenSize`
+   - `outputSize`
+   - `w1`: input → hidden weights
+   - `b1`: hidden biases
+   - `w2`: hidden → output weights
+   - `b2`: output biases
+3. minimal session metadata (run id, epochs, compact loss, etc.)
+4. Optional: support loading legacy compact payloads via `deserializeCompactModel`.
 
 ### Prohibited (or optional) persisted large payloads
 - Prefer **omit**: `trainingSamples`, `aiStroke`, `trainStroke`
@@ -59,8 +60,7 @@ The goal is: **final rendering should be reproducible from model weights only**,
 
 3. **Persistence audit**
 - After each run, assert:
-  - saved payload has `model` and `compactModelMeta`
-  - model metadata is present and small (base64 length only)
+  - saved payload has full `model` object and parseable weights
   - no `aiStroke` in record (or explicitly accepted as legacy fallback only)
 
 4. **Target rendering guarantee**
