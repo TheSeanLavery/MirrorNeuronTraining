@@ -19,6 +19,7 @@
           <span><b id="lossValue">--</b> loss</span>
           <span><b id="epochValue">0</b> epochs</span>
           <span><b id="agentValue">1,200</b> agents</span>
+          <span><b id="generationValue">0</b> gen</span>
         </div>
       </header>
 
@@ -35,6 +36,10 @@
         <label class="learning-toggle">
           <input id="keepLearning" type="checkbox" checked />
           Keep learning
+        </label>
+        <label class="learning-toggle">
+          <input id="repeatBest" type="checkbox" checked />
+          Repeat best
         </label>
         <button id="trainMoreButton" title="Practice the current drawing again" disabled>Train more</button>
         <button id="resetButton" title="Clear drawing">Reset</button>
